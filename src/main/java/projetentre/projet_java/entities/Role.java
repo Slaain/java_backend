@@ -1,6 +1,8 @@
 package projetentre.projet_java.entities;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -11,6 +13,9 @@ public class Role {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToMany(mappedBy = "roles") // Relation inverse avec l'entité User
+    private Set<User> users = new HashSet<>();
 
     // Constructeur par défaut
     public Role() {
@@ -33,4 +38,11 @@ public class Role {
         this.name = name;
     }
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }

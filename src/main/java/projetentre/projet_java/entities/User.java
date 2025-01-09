@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -22,7 +23,7 @@ public class User {
     private String nom;
     private String username;
 
-    @Column(name = "date_creation")
+    @Column(name = "date_creation", nullable = false, updatable = false)
     private LocalDateTime dateCreation;  // Le nom de la variable correspond au nom de la colonne
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -31,6 +32,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     public User() {
@@ -61,8 +63,9 @@ public class User {
     public Set<Role> getRoles() { return roles; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }
 
+    // Méthode appelée avant l'insertion en base de données pour initialiser la date de création
     @PrePersist
     protected void onCreate() {
-        dateCreation  = LocalDateTime.now();
+        dateCreation = LocalDateTime.now();
     }
 }

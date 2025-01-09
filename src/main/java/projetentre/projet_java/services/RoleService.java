@@ -1,21 +1,22 @@
-package projetentre.projet_java.services;  // Correction : java au lieu de jave
+package projetentre.projet_java.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projetentre.projet_java.entities.Role;
+import projetentre.projet_java.entities.User;
 import projetentre.projet_java.repositories.RoleRepository;
 
 import java.util.List;
-import java.util.Optional;  // Correction : Optional au lieu de Optionnal
+import java.util.Optional;
 
-@Service  // Correction : Service au lieu de Services
+@Service
 public class RoleService {
 
     private final RoleRepository roleRepository;
 
     @Autowired
     public RoleService(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;  // Ajout du point-virgule manquant
+        this.roleRepository = roleRepository;
     }
 
     // Créer un rôle
@@ -24,12 +25,12 @@ public class RoleService {
     }
 
     // Récupérer tous les rôles
-    public List<Role> getAllRoles() {  // Correction : getAllRoles au lieu de getAllUsers
+    public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
     // Récupérer un rôle par id
-    public Optional<Role> getRoleById(Long id) {  // Correction : findById au lieu de findByRole
+    public Optional<Role> getRoleById(Long id) {
         return roleRepository.findById(id);
     }
 
@@ -40,12 +41,20 @@ public class RoleService {
 
     // Supprimer un rôle
     public void deleteRole(Long id) {
-        roleRepository.deleteById(id);
+        Role role = roleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        // Dissocier les utilisateurs liés au rôle
+        if (role.getUsers() != null) {
+            role.getUsers().forEach(user -> user.getRoles().remove(role));
+        }
+
+        // Supprimer le rôle
+        roleRepository.delete(role);
     }
 
-    // Ajout de la méthode findByName qui était dans le repository
+    // Trouver un rôle par nom
     public Role findByName(String name) {
         return roleRepository.findByName(name);
     }
-
 }
