@@ -15,17 +15,21 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService);
-    this.userService= userService;
-}
+    public UserController(UserService userService) {  // Ajout des accolades
+        this.userService = userService;
+    }
 
-// CREATE
-@PostMapping
-public ResponseEntity<User> createUser(@RequestBody User user){
-    User newUser = userService.createUser(user);
-    return ResponseEntity.ok(newUser);
-}
+    // CREATE
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User newUser = userService.createUser(user);
+        return ResponseEntity.ok(newUser);
+    }
 
-//GET ALL
-@GetMapping ResponseEntity<List<User>> getAllUsers();
-List<Users> users = userService.getAllUsers
+    //GET ALL
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {  // Correction de la syntaxe
+        List<User> users = userService.getAllUsers();  // Ajout du point-virgule et correction de Users en User
+        return ResponseEntity.ok(users);  // Ajout du return
+    }
+}

@@ -15,7 +15,7 @@ public class UserService {
 
     @Autowired
     public UserService(UserRepository userRepository){
-        this.userRepository = userRepository
+        this.userRepository = userRepository;
     }
 
     // crée un user

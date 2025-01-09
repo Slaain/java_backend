@@ -22,8 +22,8 @@ public class User {
     private String nom;
     private String username;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "date_creation")
+    private LocalDateTime dateCreation;  // Le nom de la variable correspond au nom de la colonne
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -55,14 +55,14 @@ public class User {
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getDateCreation() { return dateCreation; }
+    public void setDateCreation(LocalDateTime dateCreation) { this.dateCreation = dateCreation; }
 
     public Set<Role> getRoles() { return roles; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        dateCreation  = LocalDateTime.now();
     }
 }
